@@ -11,6 +11,9 @@ export interface Meeting {
   議事錄?: {
     agenda_lcidc_ids?: string[];
   };
+  公報發言紀錄?: Array<{
+    agenda_lcidc_ids: string[];
+  }>;
 }
 
 export interface ApiResponse {
