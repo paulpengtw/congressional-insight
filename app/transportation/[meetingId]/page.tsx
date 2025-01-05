@@ -18,7 +18,12 @@ export async function generateStaticParams() {
   }
 }
 
-export default function MeetingPage({ params }: { params: { meetingId: string } }) {
+export default async function MeetingPage({ params }: { params: { meetingId: string } }) {
   const decodedMeetingId = decodeURIComponent(params.meetingId);
-  return <MeetingDetail meetingId={decodedMeetingId} />;
+  
+  return (
+    <div>
+      <MeetingDetail meetingId={decodedMeetingId} />
+    </div>
+  );
 } 
