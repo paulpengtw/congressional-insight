@@ -1,7 +1,7 @@
 'use client';
 
 import { useState, useEffect } from 'react';
-import { Building2, ArrowLeft } from 'lucide-react';
+import { Building2, ArrowLeft, ExternalLink } from 'lucide-react';
 import Link from 'next/link';
 import { Meeting, ApiResponse } from '../types';
 import { MEETING } from '@/app/constants/zh';
@@ -12,12 +12,11 @@ interface MeetingDetailProps {
 
 export function MeetingDetail({ meetingId }: MeetingDetailProps) {
   const [meeting, setMeeting] = useState<Meeting | null>(null);
-  const [transcript, setTranscript] = useState<string>('');
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState<string | null>(null);
 
   useEffect(() => {
-    const fetchMeetingAndTranscript = async () => {
+    const fetchMeeting = async () => {
       try {
         const meetingResponse = await fetch('https://v2.ly.govapi.tw/committee/23/meets');
         if (!meetingResponse.ok) {
@@ -32,19 +31,6 @@ export function MeetingDetail({ meetingId }: MeetingDetailProps) {
         }
         
         setMeeting(meetingDetail);
-
-        if (meetingDetail[MEETING.MINUTES]?.agenda_lcidc_ids?.length) {
-          const transcriptResponse = await fetch(
-            `https://ly.govapi.tw/gazette_agenda/${meetingDetail[MEETING.MINUTES].agenda_lcidc_ids[0]}/html`
-          );
-          
-          if (!transcriptResponse.ok) {
-            throw new Error('Failed to fetch transcript');
-          }
-          
-          const transcriptHtml = await transcriptResponse.text();
-          setTranscript(transcriptHtml);
-        }
       } catch (err) {
         setError(err instanceof Error ? err.message : 'An error occurred');
       } finally {
@@ -52,8 +38,12 @@ export function MeetingDetail({ meetingId }: MeetingDetailProps) {
       }
     };
 
-    fetchMeetingAndTranscript();
+    fetchMeeting();
   }, [meetingId]);
+
+  const transcriptUrl = meeting?.['公報發言紀錄']?.[0]?.agenda_lcidc_ids?.[0]
+    ? `https://ly.govapi.tw/gazette_agenda/${meeting['公報發言紀錄'][0].agenda_lcidc_ids[0]}/html`
+    : null;
 
   return (
     <div className="min-h-screen bg-background">
@@ -96,7 +86,20 @@ export function MeetingDetail({ meetingId }: MeetingDetailProps) {
         {meeting && (
           <div className="space-y-6">
             <div>
-              <h2 className="text-2xl font-bold mb-2">{meeting[MEETING.MEETING_TITLE]}</h2>
+              <div className="flex items-center gap-2 mb-2">
+                <h2 className="text-2xl font-bold">{meeting[MEETING.MEETING_TITLE]}</h2>
+                {transcriptUrl && (
+                  <a 
+                    href={transcriptUrl}
+                    target="_blank"
+                    rel="noopener noreferrer"
+                    className="inline-flex items-center text-muted-foreground hover:text-primary"
+                    title="View Full Transcript"
+                  >
+                    <ExternalLink className="h-5 w-5" />
+                  </a>
+                )}
+              </div>
               <div className="text-gray-600 mb-6">
                 {meeting[MEETING.DATE].join(', ')}
               </div>
@@ -112,17 +115,6 @@ export function MeetingDetail({ meetingId }: MeetingDetailProps) {
                   {meeting[MEETING.TRANSCRIPT][0].meetingContent}
                 </div>
               </div>
-            )}
-
-            {transcript ? (
-              <div 
-                className="prose max-w-none mt-8"
-                dangerouslySetInnerHTML={{ __html: transcript }} 
-              />
-            ) : (
-              <p className="text-center text-muted-foreground py-8">
-                No transcript available for this meeting
-              </p>
             )}
           </div>
         )}
