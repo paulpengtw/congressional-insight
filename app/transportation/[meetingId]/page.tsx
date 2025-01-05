@@ -10,7 +10,7 @@ export async function generateStaticParams() {
     }
     const data: ApiResponse = await response.json();
     return data.meets.map((meeting) => ({
-      meetingId: meeting[MEETING.MEETING_CODE],
+      meetingId: encodeURIComponent(meeting[MEETING.MEETING_CODE]),
     }));
   } catch (error) {
     console.error('Error fetching meetings:', error);
@@ -19,5 +19,6 @@ export async function generateStaticParams() {
 }
 
 export default function MeetingPage({ params }: { params: { meetingId: string } }) {
-  return <MeetingDetail meetingId={params.meetingId} />;
+  const decodedMeetingId = decodeURIComponent(params.meetingId);
+  return <MeetingDetail meetingId={decodedMeetingId} />;
 } 

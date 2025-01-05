@@ -12,6 +12,11 @@ type Meeting = {
   [MEETING.MINUTES]?: {
     agenda_lcidc_ids: string[];
   };
+  '公報發言紀錄'?: {
+    agenda_lcidc_ids: string[];
+    meet_name: string;
+    content: string;
+  }[];
 }
 
 export type { Meeting }; 

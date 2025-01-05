@@ -22,4 +22,5 @@ export interface Meeting {
   date: string;
   description: string;
   committee: string;
+  agenda_lcidc_ids?: string[];
 }

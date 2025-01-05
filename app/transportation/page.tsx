@@ -23,7 +23,17 @@ export default function TransportationPage() {
           throw new Error('Failed to fetch meetings');
         }
         const data = await response.json();
-        setMeetings(data.meets || []);
+        console.log('Fetched meetings data:', data);
+        const meetingsWithIds = data.meets.map((meeting: any) => {
+          const agendaLcidcIds = meeting.公報發言紀錄?.[0]?.agenda_lcidc_ids || [];
+          console.log('Extracted agenda_lcidc_ids:', agendaLcidcIds);
+          return {
+            ...meeting,
+            agenda_lcidc_ids: agendaLcidcIds[0] || '' // Use the first ID if available
+          };
+        });
+        setMeetings(meetingsWithIds || []);
+        console.log('Agenda LCIDC IDs:', meetingsWithIds.map((m: Meeting) => m.agenda_lcidc_ids));
       } catch (err) {
         setError(err instanceof Error ? err.message : 'An error occurred');
       } finally {
