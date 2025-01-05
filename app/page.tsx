@@ -5,6 +5,7 @@ import { SearchBar } from './components/SearchBar';
 import { FilterSidebar } from './components/FilterSidebar';
 import { TranscriptCard } from './components/TranscriptCard';
 import { Building2 } from 'lucide-react';
+import Link from 'next/link';
 
 // Mock data - replace with actual API calls
 const MOCK_DATA = {
@@ -59,8 +60,16 @@ export default function Home() {
               <Building2 className="h-6 w-6" />
               <h1 className="text-xl font-bold">Congressional Insights</h1>
             </div>
-            <div className="w-96">
-              <SearchBar onSearch={setSearchQuery} />
+            <div className="flex items-center gap-4">
+              <Link 
+                href="/transportation" 
+                className="px-4 py-2 rounded-md bg-primary text-primary-foreground hover:bg-primary/90"
+              >
+                Transportation Committee
+              </Link>
+              <div className="w-96">
+                <SearchBar onSearch={setSearchQuery} />
+              </div>
             </div>
           </div>
         </div>
