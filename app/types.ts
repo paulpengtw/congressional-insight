@@ -19,4 +19,20 @@ type Meeting = {
   }[];
 }
 
+export type Transcript = {
+  id: string;
+  content: string;
+  date: string;
+  sentiment?: number;
+  topic?: string;
+  summary?: string;
+};
+
+export type Congressman = {
+  name: string;
+  party: string;
+  state: string;
+  imageUrl?: string;
+};
+
 export type { Meeting }; 
