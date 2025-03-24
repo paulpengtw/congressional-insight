@@ -43,8 +43,10 @@ export async function POST(request: Request) {
 
     const promptMap = {
       summarize: 'Please provide a concise summary of the following content in zh-tw:',
-      analyze: 'Please analyze the key points and insights from the following content:',
-      extract: 'Please extract the main facts and data points from the following content:',
+      analyze: 'Please analyze the key points and insights from the following content in zh-tw:',
+      extract: 'Please list the perspective of each member (focus on 委員 only) in the following content in zh-tw:',
+      // extract: 'Please extract the main facts and data points from the following content:',
+      列出每個委員的發言: 'Please list the perspective of each member in the following content:',
     };
 
     const selectedPrompt = promptMap[operation as keyof typeof promptMap] || promptMap.summarize;
@@ -57,7 +59,7 @@ export async function POST(request: Request) {
         messages: [{ role: "user", content: finalPrompt }],
         model: "gpt-4o-mini",
         temperature: 0.7,
-        max_tokens: 500,
+        max_tokens: 2000,
       });
 
       return NextResponse.json({

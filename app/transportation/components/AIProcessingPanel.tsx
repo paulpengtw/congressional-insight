@@ -62,7 +62,7 @@ export default function AIProcessingPanel({ agendaLcidcId }: AIProcessingPanelPr
       
       if (!response.ok) {
         // If direct fetch fails, try the text version
-        const textUrl = targetUrl.replace('.doc', '.txt');
+        const textUrl = targetUrl.replace('.doc');
         console.log('Trying text version:', textUrl);
         response = await fetch(textUrl);
         
