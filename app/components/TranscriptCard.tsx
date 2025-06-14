@@ -1,5 +1,6 @@
 import { Card, CardHeader, CardTitle, CardContent } from '@/components/ui/card';
 import { Badge } from '@/components/ui/badge';
+import Image from 'next/image';
 import { Transcript, Congressman } from '@/app/types/index';
 
 interface TranscriptCardProps {
@@ -12,10 +13,12 @@ export function TranscriptCard({ transcript, congressman }: TranscriptCardProps)
     <Card className="hover:shadow-lg transition-shadow">
       <CardHeader>
         <div className="flex items-center gap-4">
-          <img
+          <Image
             src={congressman.imageUrl || 'https://images.unsplash.com/photo-1541872703-74c5e44368f9?w=64&h=64&fit=crop&crop=faces'}
             alt={congressman.name}
-            className="w-12 h-12 rounded-full object-cover"
+            width={48}
+            height={48}
+            className="rounded-full object-cover"
           />
           <div>
             <CardTitle className="text-lg">{congressman.name}</CardTitle>
