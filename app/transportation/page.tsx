@@ -3,16 +3,20 @@
 import React, { useState, useEffect } from 'react';
 import Link from 'next/link';
 import { Building2 } from 'lucide-react';
-import { Meeting } from '../types';
+import { Meeting as OriginalMeeting } from '../types';
 import { MeetingCard } from './MeetingCard';
 import { KEYWORDS, MEETING } from '../constants/zh';
+
+interface EnhancedMeeting extends OriginalMeeting {
+  agenda_lcidc_ids: string;
+}
 
 export default function TransportationPage() {
   const [selectedSession, setSelectedSession] = useState<string>('all');
   const [showDigitalOnly, setShowDigitalOnly] = useState(false);
   const [loading, setLoading] = useState(false);
   const [error, setError] = useState<string | null>(null);
-  const [meetings, setMeetings] = useState<Meeting[]>([]);
+  const [meetings, setMeetings] = useState<EnhancedMeeting[]>([]);
 
   useEffect(() => {
     const fetchMeetings = async () => {
@@ -32,8 +36,8 @@ export default function TransportationPage() {
             agenda_lcidc_ids: agendaLcidcIds[0] || '' // Use the first ID if available
           };
         });
-        setMeetings(meetingsWithIds || []);
-        console.log('Agenda LCIDC IDs:', meetingsWithIds.map((m: Meeting) => m.agenda_lcidc_ids));
+        setMeetings(meetingsWithIds as EnhancedMeeting[] || []);
+        console.log('Agenda LCIDC IDs:', meetingsWithIds.map((m: EnhancedMeeting) => m.agenda_lcidc_ids));
       } catch (err) {
         setError(err instanceof Error ? err.message : 'An error occurred');
       } finally {
@@ -44,7 +48,7 @@ export default function TransportationPage() {
     fetchMeetings();
   }, []);
 
-  const isDigitalRelated = (meeting: Meeting) => {
+  const isDigitalRelated = (meeting: EnhancedMeeting) => {
     // Check if meeting content contains digital/communications related keywords
     const keywords = [
       KEYWORDS.DIGITAL,
@@ -131,4 +135,4 @@ export default function TransportationPage() {
       </main>
     </div>
   );
-} 
+}
