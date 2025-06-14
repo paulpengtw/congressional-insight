@@ -1,6 +1,6 @@
 import { Card, CardHeader, CardTitle, CardContent } from '@/components/ui/card';
 import { Badge } from '@/components/ui/badge';
-import { Transcript, Congressman } from '../types';
+import { Transcript, Congressman } from '@/app/types/index';
 
 interface TranscriptCardProps {
   transcript: Transcript;
@@ -33,7 +33,7 @@ export function TranscriptCard({ transcript, congressman }: TranscriptCardProps)
           <p className="text-muted-foreground line-clamp-3">{transcript.content}</p>
         </div>
         <div className="flex flex-wrap gap-2">
-          {transcript.tags.map((tag) => (
+          {transcript.tags.map((tag: string) => (
             <Badge key={tag} variant="secondary">
               {tag}
             </Badge>
