@@ -6,9 +6,15 @@ import { FilterSidebar } from './components/FilterSidebar';
 import { TranscriptCard } from './components/TranscriptCard';
 import { Building2 } from 'lucide-react';
 import Link from 'next/link';
+import { Transcript, Congressman } from '@/app/types/index';
 
 // Mock data - replace with actual API calls
-const MOCK_DATA = {
+interface MockDataType {
+  transcripts: Transcript[];
+  congressmen: Congressman[];
+}
+
+const MOCK_DATA: MockDataType = {
   transcripts: [
     {
       id: '1',
