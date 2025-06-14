@@ -62,7 +62,7 @@ export default function AIProcessingPanel({ agendaLcidcId }: AIProcessingPanelPr
       
       if (!response.ok) {
         // If direct fetch fails, try the text version
-        const textUrl = targetUrl.replace('.doc');
+        const textUrl = targetUrl.replace('.doc', '.txt');
         console.log('Trying text version:', textUrl);
         response = await fetch(textUrl);
         
@@ -248,4 +248,4 @@ export default function AIProcessingPanel({ agendaLcidcId }: AIProcessingPanelPr
       )}
     </div>
   );
-} 
+}
